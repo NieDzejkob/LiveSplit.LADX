@@ -1,17 +1,15 @@
 # LiveSplit.PokemonRB
 This is a LiveSplit autosplitter component for English Pokemon Red and Pokemon Blue on emulator.
 
-This autosplitter works with either BGB or Gambatte. It will autodetect which one you're using.
+This autosplitter works with BGB. It will autodetect which version you're using.
 
 **Supported emulators:**
-- BGB 1.5.1
 - BGB 1.5.2
-- Gambatte r571
 
 ## Features
 - Automatically start the timer when you hit new game.
 - Automatically stop the timer when the Hall of Fame fade happens.
-- Automatically reset the timer when you erase the savefile or do a hardreset without a savefile
+- Automatically reset the timer when you do a hardreset without a savefile
 
 ## Installation
 <!--- Go to "Edit Splits..." in LiveSplit.

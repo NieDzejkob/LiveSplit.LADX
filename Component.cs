@@ -9,84 +9,65 @@ using System.Windows.Forms;
 using System.Text;
 using LiveSplit.ComponentUtil;
 
-namespace LiveSplit.LADX
-{
-    class LADXComponent : LogicComponent
-    {
+namespace LiveSplit.PokemonRB {
+    class PokemonRBComponent : LogicComponent {
         [DllImport("user32.dll")]
         static extern int SetForegroundWindow(IntPtr point);
 
-        public override string ComponentName => "LADX Auto Splitter";
+        public override string ComponentName => "Pokemon RB Auto Splitter";
 
-        public LADXSettings settings { get; set; }
+        public PokemonRBSettings settings { get; set; }
 
         private Process game { get; set; }
         private TimerModel model { get; set; }
-        private LADXMemory memory { get; set; }
+        private PokemonRBMemory memory { get; set; }
 
         private Timer processTimer;
 
-        private bool AllowFS = true;
-
-        public LADXComponent(LiveSplitState state)
-        {
-            settings = new LADXSettings();
+        public PokemonRBComponent(LiveSplitState state) {
+            settings = new PokemonRBSettings();
 
             model = new TimerModel() { CurrentState = state };
-            model.CurrentState.OnStart += timer_OnStart;
 
             processTimer = new Timer() { Interval = 2000, Enabled = true };
             processTimer.Tick += processTimer_OnTick;
 
-            memory = new LADXMemory();
+            memory = new PokemonRBMemory();
         }
 
-        public override void Update(IInvalidator invalidator, LiveSplitState state, float width, float height, LayoutMode mode)
-        {
-            if (game != null && !game.HasExited)
-            {
-                if (state.CurrentPhase == TimerPhase.NotRunning)
-                {
-                    if (settings.AutoStartTimer)
-                    {
-                        if (memory.doStart(game))
-                        {
-                            AllowFS = false;
+        public override void Update(IInvalidator invalidator, LiveSplitState state, float width, float height, LayoutMode mode) {
+            if (game != null && !game.HasExited) {
+                if (state.CurrentPhase == TimerPhase.NotRunning) {
+                    if (settings.AutoStartTimer) {
+                        if (memory.doStart(game)) {
                             model.Start();
                         }
                     }
-                }
-                else
-                {
-                    if (settings.AutoReset)
-                    {
-                        if (memory.doReset(game))
+                } else {
+                    if (settings.AutoReset) {
+                        if (memory.doReset(game)) {
                             model.Reset();
+                        }
                     }
                 }
 
-                if (state.CurrentPhase == TimerPhase.Running)
-                {
-                    if (memory.doSplit(game))
+                if (state.CurrentPhase == TimerPhase.Running) {
+                    if (memory.doSplit(game)) {
                         model.Split();
+                    }
                 }
             }
-            else if (!processTimer.Enabled)
-            {
+            else if (!processTimer.Enabled) {
                 processTimer.Enabled = true;
             }
         }
 
-        Process getGameProcess()
-        {
+        Process getGameProcess() {
             Process process = null;
 
-            foreach (Process p in Process.GetProcesses())
-            {
-                try
-                {
-                    if (p.MainModuleWow64Safe().ModuleMemorySize == 5656576 || p.MainModuleWow64Safe().ModuleMemorySize == 1691648 || p.MainModuleWow64Safe().ModuleMemorySize == 1699840)
-                    {
+            foreach (Process p in Process.GetProcesses()) {
+                try {
+                    if (p.MainModuleWow64Safe().ModuleMemorySize == 1699840) {
                         process = p;
                         break;
                     }
@@ -94,75 +75,41 @@ namespace LiveSplit.LADX
                 catch { }
             }
 
-            if (process != null)
-            {
-                if (process.MainModuleWow64Safe().ModuleMemorySize == 1691648)
-                    memory.emulator = Emulator.bgb151;
-                else if (process.MainModuleWow64Safe().ModuleMemorySize == 1699840)
-                    memory.emulator = Emulator.bgb152;
-                else if (process.MainModuleWow64Safe().ModuleMemorySize == 5656576)
-                    memory.emulator = Emulator.gambatte571;
+            if (process != null) {
+                switch (process.MainModuleWow64Safe().ModuleMemorySize) {
+                    case 1699840:
+                        memory.emulator = Emulator.bgb152;
+                        break;
+                }
 
                 memory.setPointers();
-
                 return process;
             }
 
             return null;
         }
 
-        void timer_OnStart(object sender, EventArgs e)
-        {
-            if (game != null && !game.HasExited)
-            {
-                memory.getVersion(game);
-                memory.setSplits(settings);
-
-                if (AllowFS)
-                {
-                    if (settings.AutoSelectFile) //auto file select
-                    {
-                        SetForegroundWindow(game.MainWindowHandle);
-                        SendKeys.SendWait("{] 20}");
-                    }
-                }
-                else
-                {
-                    AllowFS = true;
-                }
-            }
-        }
-
-        void processTimer_OnTick(object sender, EventArgs e)
-        {
-            if (game == null || game.HasExited)
-            {
+        void processTimer_OnTick(object sender, EventArgs e) {
+            if (game == null || game.HasExited) {
                 game = getGameProcess();
-            }
-            else
-            {
+            } else {
                 processTimer.Enabled = false;
             }
         }
 
-        public override void Dispose()
-        {
-            model.CurrentState.OnStart -= timer_OnStart;
+        public override void Dispose() {
             processTimer.Tick -= processTimer_OnTick;
         }
 
-        public override System.Xml.XmlNode GetSettings(System.Xml.XmlDocument document)
-        {
+        public override System.Xml.XmlNode GetSettings(System.Xml.XmlDocument document) {
             return settings.GetSettings(document);
         }
 
-        public override System.Windows.Forms.Control GetSettingsControl(UI.LayoutMode mode)
-        {
+        public override System.Windows.Forms.Control GetSettingsControl(UI.LayoutMode mode) {
             return settings;
         }
 
-        public override void SetSettings(System.Xml.XmlNode settings)
-        {
+        public override void SetSettings(System.Xml.XmlNode settings) {
             this.settings.SetSettings(settings);
         }
     }

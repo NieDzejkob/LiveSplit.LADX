@@ -1,84 +1,66 @@
 ﻿using LiveSplit.ComponentUtil;
 using System.Diagnostics;
 using System.Collections.Generic;
-using System.Windows.Forms;
 using System;
 
-namespace LiveSplit.LADX
+namespace LiveSplit.PokemonRB
 {
-    class LADXMemory
+    class PokemonRBMemory
     {
         public Emulator emulator { get; set; }
-        private GameVersion version { get; set; }
 
-        private LADXData data;
-        private InfoList splits;
+        private PokemonRBData data;
 
-        public LADXMemory()
-        {
+        public PokemonRBMemory() {
 
         }
         
-        public void setPointers()
-        {
-            data = new LADXData(emulator);
+        public void setPointers() {
+            data = new PokemonRBData(emulator);
         }
 
-        public void setSplits(LADXSettings settings)
-        {
-            splits = new InfoList();
+        public void setSplits(PokemonRBSettings settings) {
+            /*splits = new InfoList();
             splits.AddRange(DefaultInfo.BaseSplits);
-           
-            if (version == GameVersion.LA && settings.ICSTimings)
-                splits.AddRange(DefaultInfo.ICSSplits);
-            else
-                splits.AddRange(DefaultInfo.InstrumentSplits);
 
             foreach (var _setting in settings.CheckedSplits)
             {
                 if (!_setting.isEnabled)
                     splits.Remove(splits[_setting.Name]);
-            }
+            }*/
         }
 
-        public void getVersion(Process game)
-        {
-            data["VersionCheck"].Update(game);
+        public bool doStart(Process game) {
+            data.UpdateAll(game);
 
-            int _int = Convert.ToInt32(data["VersionCheck"].Current);
-            if (_int == 0)
-                version = GameVersion.LA;
-            else
-                version = GameVersion.LADX;
-        }
+            ushort wPlayerID = Convert.ToUInt16(data["wPlayerID"].Current);
+            byte topLeftTile = Convert.ToByte(data["wTileMap"].Current);
+            byte wCurrentMenuItem = Convert.ToByte(data["wCurrentMenuItem"].Current);
+            byte hJoy5 = Convert.ToByte(data["hJoy5"].Current);
+            ushort stack = Convert.ToUInt16(data["newGameStack"].Current);
 
-        public bool doStart(Process game)
-        {
-            data["FileSelect"].Update(game);
-
-            short _short = Convert.ToInt16(data["FileSelect"].Current);
-            if (_short == 0x0902)
-                return true;
+            if (stack != 0x5B91) return false; // credits to lucky for that one
+            if (wPlayerID != 0) return false; // in game or savefile exists
+            if (topLeftTile != 0x79) return false; // not in the menu we want
+            if ((wCurrentMenuItem == 0) && ((hJoy5 & 0x09) != 0)) return true;
 
             return false;
         }
 
-        public bool doReset(Process game)
-        {
-            data["ResetCheck"].Update(game);
+        public bool doReset(Process game) {
+            /*data["ResetCheck"].Update(game);
 
             byte _byte = Convert.ToByte(data["ResetCheck"].Current);
             if (_byte > 0)
-                return true;
+                return true;*/
 
             return false;
         }
 
-        public bool doSplit(Process game)
-        {
+        public bool doSplit(Process game) {
             data.UpdateAll(game);
 
-            foreach (var _split in splits)
+            /*foreach (var _split in splits)
             {
                 int count = 0;
                 foreach (var _trigger in _split.Triggers)
@@ -101,43 +83,28 @@ namespace LiveSplit.LADX
                     splits.Remove(_split);
                     return true;
                 }
-            }
+            }*/
 
             return false;
         }
-
-        private enum GameVersion
-        {
-            unknown,
-            LADX,
-            LA
-        }
     }
 
-    class LADXData : MemoryWatcherList
+    class PokemonRBData : MemoryWatcherList
     {
         private int ptrBase;
         private List<int>[] ptrOffsets;
 
-        public LADXData(Emulator emulator)
+        public PokemonRBData(Emulator emulator)
         {
-            if (emulator == Emulator.bgb151)
+            switch (emulator)
             {
-                ptrBase = 0x000FC5CC;
-                ptrOffsets = new List<int>[] { new List<int> { 0xF5C, 0x1A8 }, new List<int> { 0xF5C, 0x264 } };
-            }
-            else if (emulator == Emulator.bgb152)
-            {
-                ptrBase = 0x000FE5CC;
-                ptrOffsets = new List<int>[] { new List<int> { 0xC4C, 0x1B0 }, new List<int> { 0xC4C, 0x26C } };
-            }
-            else if (emulator == Emulator.gambatte571)
-            {
-                ptrBase = 0x00552038;
-                ptrOffsets = new List<int>[] { new List<int> { 0x1C, 0x10, 0x10, 0x110, 0x6C }, new List<int> { 0x1C, 0x10, 0x10, 0x110, 0x8C } };
+                case Emulator.bgb152:
+                    ptrBase = 0x127284;
+                    ptrOffsets = new List<int>[] { new List<int> { 0x204 }, new List<int> { 0x22C } };
+                    break;
             }
 
-            foreach (var _ptr in DefaultInfo.Pointers)
+            foreach (var _ptr in DefaultPointers.Pointers)
             {
                 if (_ptr.Type == "byte")
                     this.Add(new MemoryWatcher<byte>(new DeepPointer(ptrBase, getOffsets(_ptr.Index, _ptr.Offset))) { Name = _ptr.Name });
@@ -161,8 +128,6 @@ namespace LiveSplit.LADX
     public enum Emulator
     {
         unknown,
-        bgb151,
-        bgb152,
-        gambatte571
+        bgb152
     }
 }

@@ -1,16 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveSplit.LADX", "LiveSplit.LADX.csproj", "{58B71948-0597-46D2-878B-6C7D1DDC9E18}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveSplit.PokemonRB", "LiveSplit.PokemonRB.csproj", "{58B71948-0597-46D2-878B-6C7D1DDC9E18}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9BB1B33A-40DA-406E-8D58-682D44E4DC00}"
 	ProjectSection(SolutionItems) = preProject
 		ChangeLog.txt = ChangeLog.txt
-		Components\LiveSplit.LADX.dll = Components\LiveSplit.LADX.dll
 		README.md = README.md
-		Components\update.LiveSplit.LADX.xml = Components\update.LiveSplit.LADX.xml
+		Components\update.LiveSplit.PokemonRB.xml = Components\update.LiveSplit.PokemonRB.xml
 	EndProjectSection
 EndProject
 Global
