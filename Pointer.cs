@@ -4,15 +4,28 @@ using System.Linq;
 namespace LiveSplit.PokemonRB {
     public static class DefaultPointers {
         public static PointerList Pointers = new PointerList {
-            //WRAM pointers
-            new Pointer("wCurrentMenuItem", "byte", 0, 0x0C26),
+            // WRAM pointers
             new Pointer("wTileMap", "byte", 0, 0x03A0),
+            new Pointer("wCurrentMenuItem", "byte", 0, 0x0C26),
+            new Pointer("wHoFMonOrPlayer", "byte", 0, 0x0D40),
+            new Pointer("wPartyCount", "byte", 0, 0x1163),
+            new Pointer("wObtainedBadges", "byte", 0, 0x1356),
             new Pointer("wPlayerID", "short", 0, 0x1359),
+            new Pointer("wCurMap", "byte", 0, 0x135E),
             new Pointer("newGameStack", "short", 0, 0x1FFD),
 
-            //HRAM pointers
+            // event pointers
+            new Pointer("eventD74B", "byte", 0, 0x174B),
+            new Pointer("eventD74E", "byte", 0, 0x174E),
+            new Pointer("eventD7F3", "byte", 0, 0x17F3),
+
+            // HRAM pointers
             new Pointer("DMA", "int", 1, 0x00),
-            new Pointer("hJoy5", "byte", 1, 0x35)
+            new Pointer("hJoy5", "byte", 1, 0x35),
+
+            new Pointer("Reset", "int", 2, 0x2598),
+
+            new Pointer("rBGP", "byte", 3, 0x18)
         };
     }
 

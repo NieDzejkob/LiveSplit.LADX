@@ -71,7 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Split.cs" />
-    <Compile Include="Info.cs" />
+    <Compile Include="Pointer.cs" />
     <Compile Include="GameMemory.cs" />
     <Compile Include="Component.cs" />
     <Compile Include="ComponentSettings.cs">

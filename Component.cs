@@ -38,10 +38,9 @@ namespace LiveSplit.PokemonRB {
         public override void Update(IInvalidator invalidator, LiveSplitState state, float width, float height, LayoutMode mode) {
             if (game != null && !game.HasExited) {
                 if (state.CurrentPhase == TimerPhase.NotRunning) {
-                    if (settings.AutoStartTimer) {
-                        if (memory.doStart(game)) {
-                            model.Start();
-                        }
+                    if (memory.doStart(game)) {
+                        model.Start();
+                        memory.setSplits(settings);
                     }
                 } else {
                     if (settings.AutoReset) {

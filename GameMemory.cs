@@ -3,13 +3,13 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System;
 
-namespace LiveSplit.PokemonRB
-{
-    class PokemonRBMemory
-    {
+namespace LiveSplit.PokemonRB {
+    class PokemonRBMemory {
         public Emulator emulator { get; set; }
 
         private PokemonRBData data;
+        private List<Split> splits;
+        private bool saw;
 
         public PokemonRBMemory() {
 
@@ -20,18 +20,17 @@ namespace LiveSplit.PokemonRB
         }
 
         public void setSplits(PokemonRBSettings settings) {
-            /*splits = new InfoList();
-            splits.AddRange(DefaultInfo.BaseSplits);
+            splits = new List<Split>();
+            splits.AddRange(settings.SplitsByCategory[settings.category]);
 
-            foreach (var _setting in settings.CheckedSplits)
-            {
-                if (!_setting.isEnabled)
-                    splits.Remove(splits[_setting.Name]);
-            }*/
+            foreach(Split split in splits) {
+                split.reset();
+            }
         }
 
         public bool doStart(Process game) {
             data.UpdateAll(game);
+            saw = false;
 
             ushort wPlayerID = Convert.ToUInt16(data["wPlayerID"].Current);
             byte topLeftTile = Convert.ToByte(data["wTileMap"].Current);
@@ -48,75 +47,56 @@ namespace LiveSplit.PokemonRB
         }
 
         public bool doReset(Process game) {
-            /*data["ResetCheck"].Update(game);
-
-            byte _byte = Convert.ToByte(data["ResetCheck"].Current);
-            if (_byte > 0)
-                return true;*/
-
-            return false;
+            data.UpdateAll(game);
+            uint dma = Convert.ToUInt32(data["DMA"].Current);
+            uint reset = Convert.ToUInt32(data["Reset"].Current);
+            return dma != 0x46E0C33E && reset == 0xFFFFFFFF;
         }
 
         public bool doSplit(Process game) {
             data.UpdateAll(game);
 
-            /*foreach (var _split in splits)
-            {
-                int count = 0;
-                foreach (var _trigger in _split.Triggers)
-                {
-                    int _int = Convert.ToInt32(data[_trigger.Pointer].Current);
-                    if (_trigger.Operator == ">=")
-                    {
-                        if (_int >= _trigger.Value)
-                            count++;
-                    }
-                    else
-                    {
-                        if (_int == _trigger.Value)
-                            count++;
-                    }
-                }
+            if (splits.Count == 0) {
+                // detect HoF fade here
+                byte wHoFMonOrPlayer = Convert.ToByte(data["wHoFMonOrPlayer"].Current);
+                byte rBGP = Convert.ToByte(data["rBGP"].Current);
+                if (wHoFMonOrPlayer == 1 && rBGP != 0) saw = true;
+                if (wHoFMonOrPlayer == 1 && rBGP == 0) return saw;
+            }
 
-                if (count == _split.Triggers.Count)
-                {
-                    splits.Remove(_split);
-                    return true;
-                }
-            }*/
+            Split split = splits[0];
+            if (split.shouldSplit(data)) {
+                splits.RemoveAt(0);
+                if (split.enabled) return true;
+            }
 
             return false;
         }
     }
 
-    class PokemonRBData : MemoryWatcherList
-    {
+    public class PokemonRBData : MemoryWatcherList {
         private int ptrBase;
         private List<int>[] ptrOffsets;
 
-        public PokemonRBData(Emulator emulator)
-        {
-            switch (emulator)
-            {
+        public PokemonRBData(Emulator emulator) {
+            switch (emulator) {
                 case Emulator.bgb152:
                     ptrBase = 0x127284;
-                    ptrOffsets = new List<int>[] { new List<int> { 0x204 }, new List<int> { 0x22C } };
+                    ptrOffsets = new List<int>[] { new List<int> { 0x204 }, new List<int> { 0x22C }, new List<int> { 0x88, 0x7C, 0x34 }, new List<int> { 0xF4 } }; // WRAM, HRAM, SRAM, rBGP
                     break;
             }
 
-            foreach (var _ptr in DefaultPointers.Pointers)
-            {
+            foreach (var _ptr in DefaultPointers.Pointers) {
                 if (_ptr.Type == "byte")
                     this.Add(new MemoryWatcher<byte>(new DeepPointer(ptrBase, getOffsets(_ptr.Index, _ptr.Offset))) { Name = _ptr.Name });
                 else if (_ptr.Type == "short")
-                    this.Add(new MemoryWatcher<short>(new DeepPointer(ptrBase, getOffsets(_ptr.Index, _ptr.Offset))) { Name = _ptr.Name });
+                    this.Add(new MemoryWatcher<ushort>(new DeepPointer(ptrBase, getOffsets(_ptr.Index, _ptr.Offset))) { Name = _ptr.Name });
                 else if (_ptr.Type == "int")
-                    this.Add(new MemoryWatcher<int>(new DeepPointer(ptrBase, getOffsets(_ptr.Index, _ptr.Offset))) { Name = _ptr.Name });
+                    this.Add(new MemoryWatcher<uint>(new DeepPointer(ptrBase, getOffsets(_ptr.Index, _ptr.Offset))) { Name = _ptr.Name });
             }
         }
 
-        private int[] getOffsets(int index, int offset)
-        {
+        private int[] getOffsets(int index, int offset) {
             var list = new List<int>();
             list.AddRange(ptrOffsets[index]);
             list.Add(offset);
@@ -125,8 +105,7 @@ namespace LiveSplit.PokemonRB
         }
     }
 
-    public enum Emulator
-    {
+    public enum Emulator {
         unknown,
         bgb152
     }

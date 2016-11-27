@@ -6,52 +6,52 @@ using System.Collections.Generic;
 
 namespace LiveSplit.PokemonRB {
     public partial class PokemonRBSettings : UserControl {
-        int category;
-        public bool AutoStartTimer, AutoReset;
-        Split[][] SplitsByCategory = new Split[][] {
+        public int category;
+        public bool AutoReset;
+        public Split[][] SplitsByCategory = new Split[][] {
             new Split[] { // Any% No Save Corruption
-                    new Split.EventFlagSplit("nsc_rival", "Rival Fight", false, -1, -1),
-                    new Split.EventFlagSplit("nsc_parcel1", "Get Parcel", false, -1, -1),
-                    new Split.EventFlagSplit("nsc_parcel2", "Deliver Parcel", false, -1, -1),
-                    new Split.ViridianMartSplit("nsc_mart1", "Viridian Shopping - when you exit the mart (ignores the parcel visit)", false),
+                    new Split.EventFlagSplit("nsc_rival", "Rival Fight", false, "eventD74B", 3), // EVENT_BATTLED_RIVAL_IN_OAKS_LAB
+                    new Split.EventFlagSplit("nsc_parcel1", "Get Parcel", false, "eventD74E", 1), // EVENT_GOT_OAKS_PARCEL
+                    new Split.EventFlagSplit("nsc_parcel2", "Deliver Parcel", false, "eventD74E", 0), // EVENT_OAK_GOT_PARCEL
+                    new Split.ExitMapSplit("nsc_mart1", "Viridian Shopping - when you exit the mart (ignores the parcel visit)", false, 0x2A), // VIRIDIAN_MART, depends on the deliver parcel split
                     new Split.HardResetSplit("nsc_manip1", "Pidgey Manip Reset", false),
                     new Split.PartyCountSplit("nsc_pidgey", "Get Pidgey", false, 2),
-                    new Split.CurrentMapSplit("nsc_enter_forest", "Enter Forest", false, -1),
-                    new Split.EventFlagSplit("nsc_weedle", "Defeat the Bug Catcher", false, -1, -1),
-                    new Split.CurrentMapSplit("nsc_exit_forest", "Exit Forest", false, -1),
-                    new Split.CurrentMapSplit("nsc_mart2", "Pewter Shopping - when you exit the mart", false, -1),
+                    new Split.CurrentMapSplit("nsc_enter_forest", "Enter Forest", false, 0x33), // VIRIDIAN_FOREST
+                    new Split.EventFlagSplit("nsc_weedle", "Defeat the Bug Catcher", false, "eventD7F3", 4), // EVENT_BEAT_VIRIDIAN_FOREST_TRAINER_2
+                    new Split.CurrentMapSplit("nsc_exit_forest", "Exit Forest", false, 0x2F), // VIRIDIAN_FOREST_EXIT
+                    new Split.ExitMapSplit("nsc_mart2", "Pewter Shopping - when you exit the mart", false, 0x38), // PEWTER_MART
                     new Split.HardResetSplit("nsc_btw", "Brock Through Walls Reset", false),
-                    new Split.CurrentMapSplit("nsc_dungeon", "Enter Unknown Dungeon", false, -1),
+                    new Split.CurrentMapSplit("nsc_dungeon", "Enter Unknown Dungeon", false, 0xE4), // UNKNOWN_DUNGEON_1
                     new Split.HardResetSplit("nsc_manip2", "Ditto Manip Reset", false),
                     new Split.PartyCountSplit("nsc_ditto", "Get Ditto", false, 3),
                     new Split.PartyCountSplit("nsc_glitch1", "Get Rhydon", false, 4),
                     new Split.PartyCountSplit("nsc_glitch2", "Get F4", false, 5)
             }, new Split[] { // Reverse Badge Acquisition
-                    new Split.EventFlagSplit("rba_rival", "Rival Fight", false, -1, -1),
-                    new Split.EventFlagSplit("rba_parcel1", "Get Parcel", false, -1, -1),
-                    new Split.EventFlagSplit("rba_parcel2", "Deliver Parcel", false, -1, -1),
-                    new Split.ViridianMartSplit("rba_mart1", "Viridian Shopping - when you exit the mart (ignores the parcel visit)", false),
+                    new Split.EventFlagSplit("rba_rival", "Rival Fight", false, "eventD74B", 3), // EVENT_BATTLED_RIVAL_IN_OAKS_LAB
+                    new Split.EventFlagSplit("rba_parcel1", "Get Parcel", false, "eventD74E", 1), // EVENT_GOT_OAKS_PARCEL
+                    new Split.EventFlagSplit("rba_parcel2", "Deliver Parcel", false, "eventD74E", 0), // EVENT_OAK_GOT_PARCEL
+                    new Split.CurrentMapSplit("rba_mart1", "Viridian Shopping - when you exit the mart (ignores the parcel visit)", false, 0x2A), // VIRIDIAN_MART, depends on the deliver parcel split
                     new Split.HardResetSplit("rba_manip1", "Pidgey Manip Reset", false),
                     new Split.PartyCountSplit("rba_pidgey", "Get Pidgey", false, 2),
-                    new Split.CurrentMapSplit("rba_enter_forest", "Enter Forest", false, -1),
-                    new Split.EventFlagSplit("rba_weedle", "Defeat the Bug Catcher", false, -1, -1),
-                    new Split.CurrentMapSplit("rba_exit_forest", "Exit Forest", false, -1),
-                    new Split.CurrentMapSplit("rba_mart2", "Pewter Shopping - when you exit the mart", false, -1),
+                    new Split.CurrentMapSplit("rba_enter_forest", "Enter Forest", false, 0x33), // VIRIDIAN_FOREST
+                    new Split.EventFlagSplit("rba_weedle", "Defeat the Bug Catcher", false, "eventD7F3", 4), // EVENT_BEAT_VIRIDIAN_FOREST_TRAINER_2
+                    new Split.CurrentMapSplit("rba_exit_forest", "Exit Forest", false, 0x2F), // VIRIDIAN_FOREST_EXIT
+                    new Split.CurrentMapSplit("rba_mart2", "Pewter Shopping - when you exit the mart", false, 0x38), // PEWTER_MART
                     new Split.HardResetSplit("rba_btw", "Brock Through Walls Reset", false),
-                    new Split.CurrentMapSplit("rba_dungeon", "Enter Unknown Dungeon", false, -1),
+                    new Split.CurrentMapSplit("rba_dungeon", "Enter Unknown Dungeon", false, 0xE4), // UNKNOWN_DUNGEON_1
                     new Split.HardResetSplit("rba_manip2", "Ditto Manip Reset", false),
                     new Split.PartyCountSplit("rba_ditto", "Get Ditto", false, 3),
                     new Split.PartyCountSplit("rba_missingno1", "Missingno 1", false, 4),
                     new Split.PartyCountSplit("rba_missingno2", "Missingno 2", false, 5),
                     new Split.PartyCountSplit("rba_mewtwo", "Mewtwo", false, 6),
-                    new Split.EventFlagSplit("rba_giovanni", "Giovanni", false, -1, -1),
-                    new Split.EventFlagSplit("rba_blaine", "Blaine", false, -1, -1),
-                    new Split.EventFlagSplit("rba_sabrina", "Sabrina", false, -1, -1),
-                    new Split.EventFlagSplit("rba_koga", "Koga", false, -1, -1),
-                    new Split.EventFlagSplit("rba_erika", "Erika", false, -1, -1),
-                    new Split.EventFlagSplit("rba_surge", "Lt. Surge", false, -1, -1),
-                    new Split.EventFlagSplit("rba_misty", "Misty", false, -1, -1),
-                    new Split.EventFlagSplit("rba_brock", "Brock", false, -1, -1),
+                    new Split.EventFlagSplit("rba_giovanni", "Giovanni", false, "wObtainedBadges", 7),
+                    new Split.EventFlagSplit("rba_blaine", "Blaine", false, "wObtainedBadges", 6),
+                    new Split.EventFlagSplit("rba_sabrina", "Sabrina", false, "wObtainedBadges", 5),
+                    new Split.EventFlagSplit("rba_koga", "Koga", false, "wObtainedBadges", 4),
+                    new Split.EventFlagSplit("rba_erika", "Erika", false, "wObtainedBadges", 3),
+                    new Split.EventFlagSplit("rba_surge", "Lt. Surge", false, "wObtainedBadges", 2),
+                    new Split.EventFlagSplit("rba_misty", "Misty", false, "wObtainedBadges", 1),
+                    new Split.EventFlagSplit("rba_brock", "Brock", false, "wObtainedBadges", 0),
                 }
         };
 
@@ -60,16 +60,20 @@ namespace LiveSplit.PokemonRB {
             this.comboBox1.SelectedIndex = category = 0;
             this.lblVersion.Text = "v" + Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
 
-            AutoStartTimer = false;
             AutoReset = false;
         }
 
         public XmlNode GetSettings(XmlDocument document) {
+            if (checkedListBox1.Items.Count == SplitsByCategory[category].Length) {
+                for (int i = 0; i < checkedListBox1.Items.Count; i++) {
+                    SplitsByCategory[category][i].enabled = (checkedListBox1.GetItemCheckState(i) == CheckState.Checked);
+                }
+            }
+
             var settingsNode = document.CreateElement("Settings");
 
             settingsNode.AppendChild(ToElement(document, "Version", Assembly.GetExecutingAssembly().GetName().Version.ToString(3)));
 
-            settingsNode.AppendChild(ToElement(document, "AutoStartTimer", AutoStartTimer.ToString()));
             settingsNode.AppendChild(ToElement(document, "AutoReset", AutoReset.ToString()));
             settingsNode.AppendChild(ToElement(document, "Category", category.ToString()));
 
@@ -90,11 +94,6 @@ namespace LiveSplit.PokemonRB {
                     version = Version.Parse(element["Version"].InnerText);
                 } else {
                     version = new Version(1, 0, 0);
-                }
-
-                if (element["AutoStartTimer"] != null) {
-                    AutoStartTimer = Convert.ToBoolean(element["AutoStartTimer"].InnerText);
-                    chkStartTimer.Checked = AutoStartTimer;
                 }
 
                 if (element["AutoReset"] != null) {
@@ -125,10 +124,6 @@ namespace LiveSplit.PokemonRB {
 
         private void checkAutoReset_CheckedChanged(object sender, EventArgs e) {
             AutoReset = chkAutoReset.Checked;
-        }
-
-        private void checkStartTimer_CheckedChanged(object sender, EventArgs e) {
-            AutoStartTimer = chkStartTimer.Checked;
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) {
