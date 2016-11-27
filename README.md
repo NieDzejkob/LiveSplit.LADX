@@ -9,18 +9,15 @@ This autosplitter works with BGB. It will autodetect which version you're using.
 ## Features
 - Automatically start the timer when you hit new game.
 - Automatically stop the timer when the Hall of Fame fade happens.
-- Automatically reset the timer when you do a hardreset without a savefile
+- Automatically reset the timer when you do a hardreset without a savefile.
 
 ## Installation
-<!--- Go to "Edit Splits..." in LiveSplit.
-- Click the "Activate" button to download and enable the autosplitter (make sure the game name is correct). -->
-TODO. It's unusable right now anyway.
+Copy the LiveSplit.PokemonRB.dll into the Components folder in your LiveSplit directory
 
 ## Set-up
-<!--- The tree view lists all the events supported by the autosplitter.
-- Select (by checking the box) each event for which you would like the autosplitter to split.
-  - Note: The autosplitter does NOT check against split names, so make sure to have only as many splits as selected events.-->
-Same.
+Open the Layout Editor, add the autosplitter from the Control category.
+Click Settings, choose the autosplitter tab.
+Select your category, then mark all splits you want to split on. There is a lot of various splits available to make it versatile.
 
 ## Credits
 - [NieDzejkob](https://www.youtube.com/channel/UCRTpd6AMJBdz9-l685yjyJA)
