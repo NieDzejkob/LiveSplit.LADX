@@ -55,8 +55,7 @@ namespace LiveSplit.PokemonRB {
                         model.Split();
                     }
                 }
-            }
-            else if (!processTimer.Enabled) {
+            } else if (!processTimer.Enabled) {
                 processTimer.Enabled = true;
             }
         }
