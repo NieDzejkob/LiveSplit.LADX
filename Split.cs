@@ -57,7 +57,7 @@ namespace LiveSplit.PokemonRB {
 
             public override bool shouldSplit(PokemonRBData data) {
                 byte current = Convert.ToByte(data["wCurMap"].Current);
-                return current >= expectedMapID;
+                return current == expectedMapID;
             }
         }
 
