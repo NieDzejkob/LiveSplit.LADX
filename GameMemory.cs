@@ -60,6 +60,8 @@ namespace LiveSplit.PokemonRB {
                 // detect HoF fade here
                 byte wHoFMonOrPlayer = Convert.ToByte(data["wHoFMonOrPlayer"].Current);
                 byte rBGP = Convert.ToByte(data["rBGP"].Current);
+                byte currentMap = Convert.ToByte(data["wCurMap"].Current);
+                if (currentMap != 0x76) return false;
                 if (wHoFMonOrPlayer == 1 && rBGP != 0) saw = true;
                 if (wHoFMonOrPlayer == 1 && rBGP == 0) return saw;
             }
