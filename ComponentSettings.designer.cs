@@ -66,7 +66,9 @@
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
             "Any% No Save Corruption",
-            "Reverse Badge Acquisition"});
+            "Reverse Badge Acquisition",
+            "Catch \'em All",
+            "Any% Glitchless"});
             this.comboBox1.Location = new System.Drawing.Point(71, 17);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(395, 21);
