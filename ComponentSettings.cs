@@ -67,16 +67,22 @@ namespace LiveSplit.PokemonRB {
                 new Split.CurrentMapSplit("151_exit_center", "Exit Saffron Center", 0x0A),                                              // SAFFRON_CITY
                 new Split.HardResetSplit("151_deathfly1", "First Deathfly Manip Reset"),
                 new Split.HardResetSplit("151_deathfly2", "Second Deathfly Manip Reset"),
+                new Split.CurrentMapSplit("151_shopping", "Shopping Done (fly to viridian)", 0x01),                                     // VIRIDIAN_CITY
                 new Split.CurrentMapSplit("151_monster", "Monster Menu (enter dojo)", 0xB1),                                            // FIGHTING_DOJO
                 new Split.CurrentMapSplit("151_plant", "Power Plant (warp to cinnabar)", 0x08),                                         // CINNABAR_ISLAND
                 new Split.ExitMapSplit("151_mansion", "Cinnabar Mansion (exit mansion)", 0xA5),                                         // MANSION_1
                 new Split.CurrentMapSplit("151_safari", "Safari Zone (fly to pewter)", 0x02),                                           // PEWTER_CITY
                 new Split.CurrentMapSplit("151_dratini", "Dratini (fly to viridian)", 0x01),                                            // VIRIDIAN_CITY
                 new Split.CurrentMapSplit("151_cerulean_cave", "Cerulean Cave (fly to vermillion)", 0x05),                              // VERMILION_CITY
+                new Split.CurrentMapSplit("151_moon", "Mt. Moon (fly to viridian)", 0x01),                                              // VIRIDIAN_CITY
                 new Split.CurrentMapSplit("151_interlude1", "\"Interlude 1\" (enter viridian forest)", 0x33),                           // VIRIDIAN_FOREST
+                new Split.CurrentMapSplit("151_alt_forest", "Alternative Forest (fly to vermillion)", 0x05),                            // VERMILION_CITY
                 new Split.HardResetSplit("151_forest", "Viridian Forest (dugtrio manip reset)"),
+                new Split.CurrentMapSplit("151_crazywarp1", "Crazywarp 1 (fly to vermillion)", 0x05),                                   // VERMILION_CITY
                 new Split.CurrentMapSplit("151_enter_vroad", "Enter Victory Road", 0xC6),                                               // VICTORY_ROAD_3
+                new Split.CurrentMapSplit("151_vroad", "Victory Road (fly to celadon)", 0x06),                                          // CELADON_CITY
                 new Split.CurrentMapSplit("151_enter_seafoam", "Enter Seaform Island", 0xA1),                                           // SEAFOAM_ISLANDS_4
+                new Split.CurrentMapSplit("151_seafoam", "Seafoam Island (fly to viridian)", 0x01),                                     // VIRIDIAN_CITY
             }, new Split[] {                                                                                                        // Glitchless
                 new Split.EventFlagSplit("gle_rival", "Rival Fight", "eventD74B", 3),                                                   // EVENT_BATTLED_RIVAL_IN_OAKS_LAB
                 new Split.EventFlagSplit("gle_parcel1", "Get Parcel", "eventD74E", 1),                                                  // EVENT_GOT_OAKS_PARCEL
