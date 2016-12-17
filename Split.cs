@@ -12,15 +12,15 @@ namespace LiveSplit.PokemonRB {
         public abstract bool shouldSplit(PokemonRBData data);
         public virtual void reset() { }
 
-        public Split(string _splitID, string _name, bool _enabled) {
+        public Split(string _splitID, string _name) {
             splitID = _splitID;
             name = _name;
-            enabled = _enabled;
+            enabled = false; ;
         }
 
         public class HardResetSplit : Split {
             bool sawDMA;
-            public HardResetSplit(string _splitID, string _name, bool _enabled) : base(_splitID, _name, _enabled) {
+            public HardResetSplit(string _splitID, string _name) : base(_splitID, _name) {
                 sawDMA = false;
             }
 
@@ -39,7 +39,7 @@ namespace LiveSplit.PokemonRB {
 
         public class PartyCountSplit : Split {
             int expectedCount;
-            public PartyCountSplit(string _splitID, string _name, bool _enabled, int _expectedCount) : base(_splitID, _name, _enabled) {
+            public PartyCountSplit(string _splitID, string _name, int _expectedCount) : base(_splitID, _name) {
                 expectedCount = _expectedCount;
             }
 
@@ -51,7 +51,7 @@ namespace LiveSplit.PokemonRB {
 
         public class CurrentMapSplit : Split {
             int expectedMapID;
-            public CurrentMapSplit(string _splitID, string _name, bool _enabled, int _expectedMapID) : base(_splitID, _name, _enabled) {
+            public CurrentMapSplit(string _splitID, string _name, int _expectedMapID) : base(_splitID, _name) {
                 expectedMapID = _expectedMapID;
             }
 
@@ -64,7 +64,7 @@ namespace LiveSplit.PokemonRB {
         public class ExitMapSplit : Split {
             int expectedMapID;
             bool sawTheMap;
-            public ExitMapSplit(string _splitID, string _name, bool _enabled, int _expectedMapID) : base(_splitID, _name, _enabled) {
+            public ExitMapSplit(string _splitID, string _name, int _expectedMapID) : base(_splitID, _name) {
                 expectedMapID = _expectedMapID;
                 sawTheMap = false;
             }
@@ -84,7 +84,7 @@ namespace LiveSplit.PokemonRB {
         public class EventFlagSplit : Split {
             string flagAddress;
             int bitNumber;
-            public EventFlagSplit(string _splitID, string _name, bool _enabled, string _flagAddress, int _bitNumber) : base(_splitID, _name, _enabled) {
+            public EventFlagSplit(string _splitID, string _name, string _flagAddress, int _bitNumber) : base(_splitID, _name) {
                 flagAddress = _flagAddress;
                 bitNumber = _bitNumber;
             }
