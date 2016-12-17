@@ -1,12 +1,20 @@
 <updates>
+  <update version="1.0.2">
+    <files>
+      <file path="Components/LiveSplit.PokemonRB.dll" status="changed" />
+    </files>
+    <changelog>
+      <change>Some fixes to NSC and RBA splits</change>
+      <change>Add more conditions for HoF timer stop to prevent false positives</change>
+      <change>Add support for 151 and Glitchless</change>
+    </changelog>
+  </update>
   <update version="1.0.1">
     <files>
       <file path="Components/LiveSplit.PokemonRB.dll" status="changed" />
     </files>
     <changelog>
-      <change>
-        Basically make everything work
-      </change>
+      <change>Basically make everything work</change>
     </changelog>
   </update>
 </updates>
