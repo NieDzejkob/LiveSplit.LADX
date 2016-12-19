@@ -29,7 +29,8 @@ namespace LiveSplit.PokemonRB {
                 if (dma == 0x46E0C33E) sawDMA = true;
                 else if (sawDMA) return true;
 
-                return false;
+                byte hSoftReset = Convert.ToByte(data["hSoftReset"].Current);
+                return hSoftReset != 16;
             }
 
             public override void reset() {

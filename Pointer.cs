@@ -34,6 +34,7 @@ namespace LiveSplit.PokemonRB {
 
             // HRAM pointers
             new Pointer("DMA", "int", 1, 0x00),
+            new Pointer("hSoftReset", "byte", 1, 0x0A),
             new Pointer("hJoy5", "byte", 1, 0x35),
 
             new Pointer("Reset", "int", 2, 0x2598),
